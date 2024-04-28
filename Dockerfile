@@ -1,5 +1,5 @@
 # Step 1: Use official lightweight Python image as base OS.
-FROM tiangolo/uvicorn-gunicorn:python3.8-slim
+FROM tiangolo/uvicorn-gunicorn:python3.11
 
 # Step 2. Copy local code to the container image.
 WORKDIR /app
