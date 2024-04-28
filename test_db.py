@@ -21,8 +21,9 @@ try:
     create_table_query = '''
     CREATE TABLE IF NOT EXISTS movies_test (
         id SERIAL PRIMARY KEY,
-        task VARCHAR(255),
-        completed BOOL
+        author VARCHAR(50),
+        description VARCHAR(255),
+        release_date VARCHAR(10)
     );
     '''
 

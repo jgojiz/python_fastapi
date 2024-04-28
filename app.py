@@ -19,7 +19,7 @@ class Movie(BaseModel):
     table: str
     id: int
     author: str
-    description: bool
+    description: str
     release_date: str
 
 @app.get('/movies')
@@ -48,3 +48,20 @@ def get_movie(movieId):
         if result:
             return {'movie': result}
     raise HTTPException(status_code=404, detail= "Id not found.")
+
+@app.post('/movies')
+def create_movie(movie: Movie):
+    with conn.cursor() as cursor:
+        try:
+            query = f"""
+                INSERT INTO {movie.table} (id, author, description, release_date) 
+                VALUES (%s, %s, %s, %s)
+            """
+            print(query)
+            print((movie.id, movie.author, movie.description, movie.release_date))
+            cursor.execute(query, (movie.id, movie.author, movie.description, movie.release_date))
+            conn.commit()
+        except Exception as e:
+            print(f"Error creating movie: {e}")
+            raise HTTPException(status_code=500, detail="Internal Server Error")
+    return {'response': 'Movie created!'}
