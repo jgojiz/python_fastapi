@@ -36,7 +36,7 @@ def get_all_movies():
             print(f"Error querying all movies: {e}")
     return {'movies': movies}
 
-@app.get('/movies/{movieId}')
+@app.get('/movie/{movieId}')
 def get_movie(movieId):
     with conn.cursor() as cursor:
         try:
@@ -49,7 +49,7 @@ def get_movie(movieId):
             return {'movie': result}
     raise HTTPException(status_code=404, detail= "Id not found.")
 
-@app.post('/movies')
+@app.post('/movie')
 def create_movie(movie: Movie):
     with conn.cursor() as cursor:
         try:
@@ -65,3 +65,41 @@ def create_movie(movie: Movie):
             print(f"Error creating movie: {e}")
             raise HTTPException(status_code=500, detail="Internal Server Error")
     return {'response': 'Movie created!'}
+
+from fastapi import HTTPException
+
+@app.put('/movie')
+def update_movie(movie: Movie):
+    with conn.cursor() as cursor:
+        try:
+            query = f"""
+                UPDATE {movie.table} 
+                SET author = %s, description = %s, release_date = %s
+                WHERE id = %s
+            """
+            cursor.execute(query, (movie.author, movie.description, movie.release_date, movie.id))
+            conn.commit()
+        except Exception as e:
+            print(f"Error updating movie: {e}")
+            raise HTTPException(status_code=500, detail="Internal Server Error")
+    return {'response': 'Movie updated!'}
+
+from fastapi import HTTPException
+
+@app.delete('/movie')
+def delete_movie(movie: Movie):
+    with conn.cursor() as cursor:
+        try:
+            query = f"""
+                DELETE FROM {movie.table} 
+                WHERE id = %s
+            """
+            cursor.execute(query, (movie.id,))
+            conn.commit()
+            if cursor.rowcount == 0:
+                raise HTTPException(status_code=404, detail="Movie not found")
+        except Exception as e:
+            print(f"Error deleting movie: {e}")
+            raise HTTPException(status_code=500, detail="Internal Server Error")
+    return {'response': 'Movie deleted successfully'}
+

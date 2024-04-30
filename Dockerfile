@@ -1,13 +1,13 @@
-# Step 1: Use official lightweight Python image as base OS.
-FROM tiangolo/uvicorn-gunicorn:python3.11
+# Use the official PostgreSQL image from Docker Hub
+FROM postgres:latest
 
-# Step 2. Copy local code to the container image.
-WORKDIR /app
-COPY . .
+# Set environment variables (optional)
+ENV POSTGRES_USER=root
+ENV POSTGRES_PASSWORD=password
+ENV POSTGRES_DB=my_movies
 
-# Step 3. Install production dependencies.
-RUN pip install -r requirements.txt
+# Copy initialization SQL script to execute DDL on database startup
+COPY init.sql /docker-entrypoint-initdb.d/
 
-# Step 4: Run the web service on container startup using gunicorn webserver.
-ENV PORT=8080
-CMD gunicorn app2:app  --bind 0.0.0.0:$PORT --worker-class uvicorn.workers.UvicornWorker
+# Expose the PostgreSQL port
+EXPOSE 5432
