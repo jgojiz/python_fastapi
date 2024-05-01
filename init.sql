@@ -14,5 +14,5 @@ CREATE TABLE my_movies (
 
 -- Optionally, insert some initial data into the my_movies table
 INSERT INTO my_movies (id, author, description, release_date) VALUES
-    (1, 'movie_sample_1', 'movie_description', '2024'),
-    (2, 'movie_sample_2', 'movie_description', '1990');
+    (1, 'author1', 'movie_description', '2024'),
+    (2, 'author2', 'movie_description', '1990');

@@ -7,6 +7,9 @@ this creates the official postgres image with a volume
 then run this command to create the container and run any init files
 > docker run -d -p 5432:5432 --name my_postgres_container my_postgres_image
 
+if container already exists but not running, execute
+> docker start container_name_or_id
+
 go into the container using
 > docker exec -it container_name_or_id bash
 

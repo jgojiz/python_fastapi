@@ -6,8 +6,8 @@ from typing import List
 app = FastAPI()
 
 db_params = {
-    'dbname': 'postgres',
-    'user': 'postgres',
+    'dbname': 'my_collections',
+    'user': 'root',
     'password': 'password',
     'host': 'localhost',
     'port': '5432',
@@ -27,7 +27,7 @@ def get_all_movies():
     movies = list()
     with conn.cursor() as cursor:
         try:
-            query = 'SELECT * FROM movies_test;'
+            query = 'SELECT * FROM my_movies;'
             cursor.execute(query)
             result = cursor.fetchall()
             for row in result:
@@ -40,7 +40,7 @@ def get_all_movies():
 def get_movie(movieId):
     with conn.cursor() as cursor:
         try:
-            query = f'SELECT * FROM movies_test WHERE id = {movieId};'
+            query = f'SELECT * FROM my_movies WHERE id = {movieId};'
             cursor.execute(query)
             result = cursor.fetchall()
         except Exception as e:
